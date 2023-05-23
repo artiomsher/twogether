@@ -18,6 +18,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.twogether.R
 import com.example.twogether.navigation.TwogetherScreens
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
@@ -26,7 +27,11 @@ fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(key1 = true, block = {
         delay(1000L)
-        navController.navigate(TwogetherScreens.HomeScreen.name)
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
+            navController.navigate(TwogetherScreens.LoginScreen.name)
+        } else {
+            navController.navigate(TwogetherScreens.HomeScreen.name)
+        }
     })
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
