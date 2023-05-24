@@ -4,5 +4,12 @@
     <string name="password">Password</string>
     <string name="create_account">Create Account</string>
     <string name="login">Login</string>
-    <string name="sign_up">Sign up</string>
+    <string name="sign_up">Create a Twogether account</string>
+    <string name="logo_content_desc">Logo</string>
+    <string name="arrow_back_desc">Arrow back</string>
+    <string name="logout_button">Logout</string>
+    <string name="top_bar_register">Register</string>
+    <string name="top_bar_login">Log In</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
 </resources>
