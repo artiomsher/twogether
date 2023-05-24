@@ -12,4 +12,6 @@
     <string name="top_bar_login">Log In</string>
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
+    <string name="notification_content_desc">Notifications</string>
+    <string name="calendar_icon_content_desc">Calendar icon</string>
 </resources>
