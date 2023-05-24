@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,14 +19,19 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.twogether.R
+import com.example.twogether.components.TwogetherAppBar
+import com.example.twogether.components.login.ButtonDivider
 import com.example.twogether.components.login.EmailInput
 import com.example.twogether.components.login.PasswordInput
 import com.example.twogether.components.login.SubmitButton
 import com.example.twogether.navigation.TwogetherScreens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -37,47 +40,68 @@ fun LoginScreen(
     val showLoginForm = rememberSaveable {
         mutableStateOf(true)
     }
-
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+    val topBarTitle =
+        if (showLoginForm.value) {
+            stringResource(id = R.string.top_bar_login)
+        } else {
+            stringResource(id = R.string.top_bar_register)
+        }
+    Scaffold(topBar = {
+        TwogetherAppBar(title = topBarTitle, navController = navController)
+    }) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
-            if (showLoginForm.value) {
-                UserForm(loading = false, isCreateAccount = false) { email, password ->
-                    viewModel.signInWithEmailAndPassword(email, password) {
-                        navController.navigate(TwogetherScreens.HomeScreen.name)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                if (showLoginForm.value) {
+                    UserForm(loading = false, isCreateAccount = false) { email, password ->
+                        viewModel.signInWithEmailAndPassword(email, password) {
+                            navController.navigate(TwogetherScreens.HomeScreen.name)
+                        }
+                    }
+                } else {
+                    UserForm(loading = false, isCreateAccount = true) { email, password ->
+                        viewModel.createUserWithEmailAndPassword(email, password) {
+                            navController.navigate(TwogetherScreens.HomeScreen.name)
+                        }
                     }
                 }
-            } else {
-                UserForm(loading = false, isCreateAccount = true) { email, password ->
-                    viewModel.createUserWithEmailAndPassword(email, password) {
-                        navController.navigate(TwogetherScreens.HomeScreen.name)
-                    }
+                ButtonDivider()
+
+                Row(
+                    modifier = Modifier.padding(15.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    val text = if (showLoginForm.value) stringResource(id = R.string.sign_up)
+                    else stringResource(id = R.string.login)
+
+                    Text(
+                        text = text,
+                        modifier = Modifier
+                            .clickable {
+                                showLoginForm.value = !showLoginForm.value
+                            }
+                            .padding(start = 5.dp),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(15.dp))
-        Row(
-            modifier = Modifier.padding(15.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val text = if (showLoginForm.value) stringResource(id = R.string.sign_up)
-                        else stringResource(id = R.string.login)
 
-            Text(
-                text = text,
-                modifier = Modifier.clickable {
-                    showLoginForm.value = !showLoginForm.value
-                }.padding(start = 5.dp),
-                fontWeight = FontWeight.Bold,
-            )
         }
     }
+
 }
 
+
+
+@Preview
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserForm(
@@ -111,12 +135,18 @@ fun UserForm(
             text = stringResource(id = R.string.registration_note)
         ) else Text(text = "")
 
-        EmailInput(emailState = email, enabled = !loading, onAction = KeyboardActions {
-            passwordFocusRequest.requestFocus()
-        })
+        EmailInput(
+            modifier = Modifier.padding(horizontal = 10.dp),
+            emailState = email,
+            enabled = !loading,
+            onAction = KeyboardActions {
+                passwordFocusRequest.requestFocus()
+            })
 
         PasswordInput(
-            modifier = Modifier.focusRequester(passwordFocusRequest),
+            modifier = Modifier
+                .focusRequester(passwordFocusRequest)
+                .padding(horizontal = 10.dp),
             passwordState = password,
             labelId = stringResource(id = R.string.password),
             enabled = !loading,
