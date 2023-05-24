@@ -1,16 +1,20 @@
 package com.example.twogether.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
@@ -18,6 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,35 +40,24 @@ fun TwogetherAppBar(
     title: String = "def",
     icon: ImageVector? = null,
     showProfile: Boolean = false,
+    showNotifications: Boolean = false,
     navController: NavController? = null,
     onBackAction: () -> Unit = {}
 ) {
     SmallTopAppBar(title = {
         Row() {
-            if (showProfile) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = stringResource(id = R.string.logo_content_desc),
-                    modifier = Modifier
-                        .clip(
-                            RoundedCornerShape(12.dp)
-                        )
-                        .scale(0.8f)
-                )
-            }
             if (icon != null) {
-                Icon(imageVector = icon, contentDescription = stringResource(id = R.string.arrow_back_desc), modifier = Modifier.clickable {
-                    onBackAction.invoke()
-                })
+                Icon(imageVector = icon,
+                    contentDescription = stringResource(id = R.string.arrow_back_desc),
+                    modifier = Modifier.clickable {
+                        onBackAction.invoke()
+                    })
                 Spacer(modifier = Modifier.width(30.dp))
             }
             Text(
-                text = title,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                ),
-                textAlign = TextAlign.Center
+                text = title, style = TextStyle(
+                    fontWeight = FontWeight.ExtraBold, fontSize = 22.sp
+                ), textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.width(150.dp))
         }
@@ -73,12 +68,49 @@ fun TwogetherAppBar(
                     navController?.navigate(TwogetherScreens.LoginScreen.name)
                 }
             }) {
-                Icon(imageVector = Icons.Filled.Logout, contentDescription = stringResource(id = R.string.logout_button))
-            }
-        } else {
-            Box {
-
+                Icon(
+                    imageVector = Icons.Outlined.Settings,
+                    contentDescription = stringResource(id = R.string.logout_button),
+                    modifier = Modifier.size(27.dp)
+                )
             }
         }
-    })
+        if (showNotifications) {
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    imageVector = Icons.Outlined.Notifications,
+                    contentDescription = stringResource(id = R.string.notification_content_desc),
+                    modifier = Modifier.size(27.dp)
+                )
+            }
+        }
+    }, modifier = Modifier.padding(top = 18.dp))
+}
+
+@Composable
+fun InputField(
+    modifier: Modifier = Modifier,
+    valueState: MutableState<String>,
+    labelId: String,
+    enabled: Boolean,
+    isSingleLine: Boolean = true,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: KeyboardActions = KeyboardActions.Default
+) {
+    OutlinedTextField(
+        value = valueState.value,
+        onValueChange = { valueState.value = it },
+        label = { Text(text = labelId) },
+        singleLine = isSingleLine,
+        textStyle = TextStyle(fontSize = 18.sp),
+        modifier = modifier
+            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
+            .fillMaxWidth(),
+        enabled = enabled,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+        keyboardActions = onAction
+    )
 }
