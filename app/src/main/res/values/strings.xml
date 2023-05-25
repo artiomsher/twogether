@@ -14,4 +14,14 @@
     <string name="hide_password">Hide password</string>
     <string name="notification_content_desc">Notifications</string>
     <string name="calendar_icon_content_desc">Calendar icon</string>
+    <string name="calendar">Calendar</string>
+    <string name="favorite_things">Favorite things</string>
+    <string name="passions">Passions</string>
+    <string name="passions_icon_content_desc">Passions icon</string>
+    <string name="wishes">Wishes</string>
+    <string name="wishes_icon_content_desc">Wishes icon</string>
+    <string name="our_story">Our story</string>
+    <string name="our_story_icon_desc">Our story icon</string>
+    <string name="partner_picture_content_desc">Partner picture</string>
+    <string name="everyday_actions">Everyday actions</string>
 </resources>
