@@ -1,4 +1,4 @@
-package com.example.twogether.ui.theme
+package com.example.compose
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
