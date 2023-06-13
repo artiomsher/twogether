@@ -3,7 +3,9 @@ package com.example.twogether.screens.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -18,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -50,8 +53,10 @@ fun HomeScreen(navController: NavController) {
 fun HomeView() {
     Column(modifier = Modifier.fillMaxSize()) {
         PartnerSection()
+        Spacer(modifier = Modifier.height(10.dp))
         ActionSection()
         EverydayActions()
+        MoreForYouSection()
     }
 }
 
@@ -63,14 +68,14 @@ fun ActionSection() {
                 .weight(1f)
                 .padding(end = 8.dp)
         ) {
-            ActionCard(
+            SmallActionCard(
                 title = stringResource(id = R.string.calendar),
                 imageVector = ImageVector.vectorResource(id = R.drawable.calendar),
                 contentDescription = stringResource(
                     id = R.string.calendar_icon_content_desc
                 )
             )
-            ActionCard(
+            SmallActionCard(
                 title = stringResource(id = R.string.passions),
                 imageVector = ImageVector.vectorResource(id = R.drawable.hobbies),
                 contentDescription = stringResource(
@@ -79,14 +84,14 @@ fun ActionSection() {
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            ActionCard(
+            SmallActionCard(
                 title = stringResource(id = R.string.wishes),
                 imageVector = ImageVector.vectorResource(id = R.drawable.wishes),
                 contentDescription = stringResource(
                     id = R.string.wishes_icon_content_desc
                 )
             )
-            ActionCard(
+            SmallActionCard(
                 title = stringResource(id = R.string.our_story),
                 imageVector = ImageVector.vectorResource(id = R.drawable.story),
                 contentDescription = stringResource(
@@ -98,7 +103,7 @@ fun ActionSection() {
 }
 
 @Composable
-fun ActionCard(
+fun SmallActionCard(
     title: String,
     imageVector: ImageVector,
     contentDescription: String,
@@ -132,7 +137,8 @@ fun PartnerSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 30.dp), horizontalAlignment = Alignment.CenterHorizontally
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(4.dp))
+            .padding(25.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.partner),
@@ -148,16 +154,70 @@ fun PartnerSection() {
 
 @Composable
 fun EverydayActions() {
+    val scrollState = rememberScrollState()
+
     Text(
         text = stringResource(id = R.string.everyday_actions),
         style = TextStyle(
-            fontWeight = FontWeight.ExtraBold, fontSize = 22.sp
+            fontWeight = FontWeight.ExtraBold, fontSize = 21.sp
         ),
-        modifier = Modifier.padding(top = 20.dp)
+        modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
     )
-
+    Row(modifier = Modifier.horizontalScroll(scrollState), horizontalArrangement = Arrangement.SpaceBetween) {
+        EverydayActionCard(title = "Attention", imageVector = ImageVector.vectorResource(id = R.drawable.attention), contentDescription = "")
+        EverydayActionCard(title = "Location", imageVector = ImageVector.vectorResource(id = R.drawable.location), contentDescription = "")
+        EverydayActionCard(title = "Budget", imageVector = ImageVector.vectorResource(id = R.drawable.budget), contentDescription = "")
+        EverydayActionCard(title = "Food", imageVector = ImageVector.vectorResource(id = R.drawable.food), contentDescription = "")
+        EverydayActionCard(title = "Something", imageVector = ImageVector.vectorResource(id = R.drawable.wishes), contentDescription = "")
+    }
 
 }
+
+@Preview
+@Composable
+fun EverydayActionCard(
+    title: String = "Location",
+    imageVector: ImageVector = ImageVector.vectorResource(id = R.drawable.story),
+    contentDescription: String = "",
+    onClick: () -> Unit = {}
+) {
+    Column(
+        modifier = Modifier
+            .height(90.dp)
+            .width(100.dp)
+            .padding(end = 10.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(4.dp))
+            .clickable {
+                onClick.invoke()
+            },
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(35.dp),
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(text = title, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+    }
+}
+
+@Composable
+fun MoreForYouSection() {
+    Text(
+        text = stringResource(id = R.string.more_for_you),
+        style = TextStyle(
+            fontWeight = FontWeight.ExtraBold, fontSize = 21.sp
+        ),
+        modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
+    )
+}
+
+
+
 
 
 
