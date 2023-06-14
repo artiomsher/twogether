@@ -13,7 +13,9 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel: ViewModel() {
-
+    companion object {
+        private const val UNIQUE_CODE_LENGTH = 5
+    }
     private val auth: FirebaseAuth = Firebase.auth
 
     private val _loading = MutableLiveData(false)
@@ -37,15 +39,18 @@ class LoginScreenViewModel: ViewModel() {
 
     private fun createUser(displayName: String?) {
         val userId = auth.currentUser?.uid
+        val alphabet : List<Char> = ('A'..'Z') + ('0'..'9')
+        val uniqueCode = List(UNIQUE_CODE_LENGTH) { alphabet.random() }.joinToString("")
 
         val user = User(
             userId = userId.toString(),
             displayName = displayName.toString(),
             avatarUrl = "",
-            id = null
+            id = null,
+            uniqueCode = uniqueCode
         ).toMap()
 
-        FirebaseFirestore.getInstance().collection("users").add(user)
+        FirebaseFirestore.getInstance().collection("users").document(uniqueCode).set(user)
     }
 
     fun signInWithEmailAndPassword(email: String, password: String, home: () -> Unit) {
