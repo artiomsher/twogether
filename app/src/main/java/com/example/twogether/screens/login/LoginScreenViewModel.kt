@@ -48,7 +48,7 @@ class LoginScreenViewModel: ViewModel() {
             avatarUrl = "",
             id = null,
             uniqueCode = uniqueCode
-        ).toMap()
+        ).toMutableMap()
 
         FirebaseFirestore.getInstance().collection("users").document(uniqueCode).set(user)
     }
