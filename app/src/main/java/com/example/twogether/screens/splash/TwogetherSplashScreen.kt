@@ -23,7 +23,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.Url("https://assets7.lottiefiles.com/packages/lf20_HBmdKwR35P.json"))
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.Url("https://assets7.lottiefiles.com/packages/lf20_HBmdKwR35P.json")
+    )
 
     LaunchedEffect(key1 = true, block = {
         delay(1000L)
