@@ -26,10 +26,9 @@ import com.example.twogether.R
 import com.example.twogether.navigation.TwogetherScreens
 import com.google.firebase.auth.FirebaseAuth
 
-@Preview
 @Composable
 fun TwogetherAppBar(
-    title: String = "def",
+    title: String?,
     icon: ImageVector? = null,
     showProfile: Boolean = false,
     showNotifications: Boolean = false,
@@ -37,7 +36,7 @@ fun TwogetherAppBar(
     onBackAction: () -> Unit = {}
 ) {
     SmallTopAppBar(title = {
-        Row() {
+        Row {
             if (icon != null) {
                 Icon(imageVector = icon,
                     contentDescription = stringResource(id = R.string.arrow_back_desc),
@@ -46,11 +45,13 @@ fun TwogetherAppBar(
                     })
                 Spacer(modifier = Modifier.width(30.dp))
             }
-            Text(
-                text = title, style = TextStyle(
-                    fontWeight = FontWeight.ExtraBold, fontSize = 22.sp
-                ), textAlign = TextAlign.Center
-            )
+            if (title != null) {
+                Text(
+                    text = title, style = TextStyle(
+                        fontWeight = FontWeight.ExtraBold, fontSize = 22.sp
+                    ), textAlign = TextAlign.Center
+                )
+            }
             Spacer(modifier = Modifier.width(150.dp))
         }
     }, actions = {
@@ -78,7 +79,7 @@ fun TwogetherAppBar(
                 )
             }
         }
-    }, modifier = Modifier.padding(top = 18.dp))
+    }, modifier = Modifier.padding(top = 30.dp))
 }
 
 @Composable
