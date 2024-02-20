@@ -6,13 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.twogether.model.User
+import com.example.twogether.repository.PairsFirestoreRepository
+import com.example.twogether.repository.UsersFirestoreRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginScreenViewModel: ViewModel() {
+@HiltViewModel
+class LoginScreenViewModel @Inject constructor(
+    private val usersRepository: UsersFirestoreRepository,
+) : ViewModel() {
     companion object {
         private const val UNIQUE_CODE_LENGTH = 5
     }
@@ -42,15 +49,14 @@ class LoginScreenViewModel: ViewModel() {
         val alphabet : List<Char> = ('A'..'Z') + ('0'..'9')
         val uniqueCode = List(UNIQUE_CODE_LENGTH) { alphabet.random() }.joinToString("")
 
-        val user = User(
+        val userMutableMap = User(
             userId = userId.toString(),
             displayName = displayName.toString(),
             avatarUrl = "",
             id = null,
             uniqueCode = uniqueCode
         ).toMutableMap()
-
-        FirebaseFirestore.getInstance().collection("users").document(uniqueCode).set(user)
+        usersRepository.createUser(userMutableMap, uniqueCode)
     }
 
     fun signInWithEmailAndPassword(email: String, password: String, home: () -> Unit) {
