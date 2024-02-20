@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.twogether.R
 import com.example.twogether.components.TwogetherAppBar
@@ -35,7 +36,7 @@ import com.example.twogether.navigation.TwogetherScreens
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: LoginScreenViewModel = hiltViewModel()
 ) {
     val showLoginForm = rememberSaveable {
         mutableStateOf(true)
