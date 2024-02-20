@@ -1,6 +1,5 @@
 package com.example.twogether.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,7 +52,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = hi
 
 @Composable
 fun HomeView(navController: NavController, viewModel: HomeScreenViewModel) {
-    val modifier = Modifier.padding(top = 10.dp, start = 15.dp, end = 15.dp);
+    val modifier = Modifier.padding(top = 10.dp, start = 15.dp, end = 15.dp)
     Column(modifier = Modifier.fillMaxSize()) {
         PartnerSection(modifier, navController, viewModel)
         Spacer(modifier = Modifier.height(10.dp))
