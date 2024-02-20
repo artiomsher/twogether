@@ -25,4 +25,6 @@
     <string name="partner_picture_content_desc">Partner picture</string>
     <string name="everyday_actions">Everyday actions</string>
     <string name="more_for_you">More for you\n</string>
+    <string name="pair_request_screen_title">Pair requests\n</string>
+    <string name="baseline_arrow_forward">Forward icon</string>
 </resources>
