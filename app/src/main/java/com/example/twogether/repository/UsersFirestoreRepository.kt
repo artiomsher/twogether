@@ -2,13 +2,14 @@ package com.example.twogether.repository
 
 import com.example.twogether.data.DataOrException
 import com.example.twogether.model.User
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UsersFirestoreRepository @Inject constructor(
-    private val queryUser: Query
+    private val userCollectionReference: CollectionReference
 ) {
     suspend fun getUserByField(
         field: String,
@@ -19,7 +20,7 @@ class UsersFirestoreRepository @Inject constructor(
         try {
             dataOrException.loading = true
             dataOrException.data =
-                queryUser.whereEqualTo(field, value).limit(1).get().await().documents[0].toObject(
+                userCollectionReference.whereEqualTo(field, value).limit(1).get().await().documents[0].toObject(
                     User::class.java
                 )
 
@@ -31,5 +32,9 @@ class UsersFirestoreRepository @Inject constructor(
         }
 
         return dataOrException
+    }
+
+    fun createUser(userMutableMap:  MutableMap<String, String?>, uniqueCode: String) {
+        userCollectionReference.document(uniqueCode).set(userMutableMap)
     }
 }
