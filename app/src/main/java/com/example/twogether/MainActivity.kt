@@ -34,11 +34,6 @@ fun TwogetherApp() {
             .fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TwogetherNavigation()
-        }
+        TwogetherNavigation()
     }
 }
