@@ -133,10 +133,10 @@ fun SubmitButton(
 
 @Preview
 @Composable
-fun ButtonDivider() {
+fun ButtonDivider(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+        modifier = modifier.padding(start = 20.dp, end = 20.dp)
     ) {
         Divider(modifier = Modifier.weight(5f))
         Text(text = "or", modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
