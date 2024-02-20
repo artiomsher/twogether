@@ -18,14 +18,16 @@ object AppModule {
     @Provides
     fun provideUsersFirebaseRepository() =
         UsersFirestoreRepository(
-            queryUser = FirebaseFirestore.getInstance().collection("users")
+            userCollectionReference = FirebaseFirestore.getInstance()
+                .collection("users")
         )
 
     @Singleton
     @Provides
     fun providePairsFirebaseRepository() =
         PairsFirestoreRepository(
-            queryPair = FirebaseFirestore.getInstance().collection("pairs")
+            queryPair = FirebaseFirestore.getInstance()
+                .collection("pairs")
         )
 
     @Singleton
