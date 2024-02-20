@@ -1,5 +1,6 @@
 package com.example.twogether.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,16 +24,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.twogether.R
 import com.example.twogether.components.TwogetherAppBar
+import com.example.twogether.navigation.TwogetherScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: HomeScreenViewModel = hiltViewModel()) {
     Scaffold(topBar = {
         TwogetherAppBar(
-            title = "Twogether",
+            title = "Home",
             navController = navController,
             showProfile = true,
             showNotifications = true
@@ -42,27 +45,27 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(15.dp)
         ) {
-            HomeView()
+            HomeView(navController, viewModel)
         }
     }
 }
 
 @Composable
-fun HomeView() {
+fun HomeView(navController: NavController, viewModel: HomeScreenViewModel) {
+    val modifier = Modifier.padding(top = 10.dp, start = 15.dp, end = 15.dp);
     Column(modifier = Modifier.fillMaxSize()) {
-        PartnerSection()
+        PartnerSection(modifier, navController, viewModel)
         Spacer(modifier = Modifier.height(10.dp))
-        ActionSection()
-        EverydayActions()
-        MoreForYouSection()
+        ActionSection(Modifier.padding(horizontal = 15.dp))
+        EverydayActions(modifier)
+        MoreForYouSection(modifier)
     }
 }
 
 @Composable
-fun ActionSection() {
-    Row(modifier = Modifier.fillMaxWidth()) {
+fun ActionSection(modifier: Modifier = Modifier) {
+    Row(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -128,16 +131,22 @@ fun SmallActionCard(
             contentDescription = contentDescription,
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Text(text = title, fontWeight = FontWeight.SemiBold)
+        Text(text = title, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
     }
 }
 
 @Composable
-fun PartnerSection() {
+fun PartnerSection(modifier: Modifier = Modifier, navController: NavController, viewModel: HomeScreenViewModel) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(4.dp))
+            .clickable {
+                navController.navigate(
+                    TwogetherScreens.PairRequestScreen.name + "/${viewModel.uniqueCode.value}"
+                )
+
+            }
             .padding(25.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -153,7 +162,7 @@ fun PartnerSection() {
 }
 
 @Composable
-fun EverydayActions() {
+fun EverydayActions(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
 
     Text(
@@ -161,10 +170,10 @@ fun EverydayActions() {
         style = TextStyle(
             fontWeight = FontWeight.ExtraBold, fontSize = 21.sp
         ),
-        modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
+        modifier = modifier.padding(bottom = 10.dp)
     )
     Row(modifier = Modifier.horizontalScroll(scrollState), horizontalArrangement = Arrangement.SpaceBetween) {
-        EverydayActionCard(title = "Attention", imageVector = ImageVector.vectorResource(id = R.drawable.attention), contentDescription = "")
+        EverydayActionCard(Modifier.padding(start = 15.dp), title = "Attention", imageVector = ImageVector.vectorResource(id = R.drawable.attention), contentDescription = "")
         EverydayActionCard(title = "Location", imageVector = ImageVector.vectorResource(id = R.drawable.location), contentDescription = "")
         EverydayActionCard(title = "Budget", imageVector = ImageVector.vectorResource(id = R.drawable.budget), contentDescription = "")
         EverydayActionCard(title = "Food", imageVector = ImageVector.vectorResource(id = R.drawable.food), contentDescription = "")
@@ -176,13 +185,14 @@ fun EverydayActions() {
 @Preview
 @Composable
 fun EverydayActionCard(
+    modifier: Modifier = Modifier,
     title: String = "Location",
     imageVector: ImageVector = ImageVector.vectorResource(id = R.drawable.story),
     contentDescription: String = "",
     onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .height(90.dp)
             .width(100.dp)
             .padding(end = 10.dp)
@@ -201,25 +211,17 @@ fun EverydayActionCard(
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(5.dp))
-        Text(text = title, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+        Text(text = title, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
     }
 }
 
 @Composable
-fun MoreForYouSection() {
+fun MoreForYouSection(modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.more_for_you),
         style = TextStyle(
             fontWeight = FontWeight.ExtraBold, fontSize = 21.sp
         ),
-        modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
+        modifier = modifier.padding(bottom = 10.dp)
     )
 }
-
-
-
-
-
-
-
-
